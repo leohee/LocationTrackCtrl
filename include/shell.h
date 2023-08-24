@@ -9,6 +9,19 @@ extern "C" {
 #define HISTORY_MAX         10
 #define MAX_LINE_LEN 		80
 #define MAX_COMMAND_NB		32
+#define MAX_ARGC			8
+
+#define NL1()           do { printf("\n"); } while(0)
+#define NL2()           do { printf("\n\n"); } while(0)
+#define NL3()           do { printf("\n\n\n"); } while(0)
+
+#define SHELL_NAME()	do { printf(CLI_FONT_DEFAULT"\n -> "); } while(0)
+
+
+struct handle_type_t {
+	uint8_t		buff[MAX_LINE_LEN];
+	uint8_t		len;
+};
 
 struct command_t {
 	const char	*pCmd;
@@ -22,6 +35,10 @@ struct cmd_history_t {
 	uint8_t		latest;
 	uint8_t		show;
 };
+
+extern struct queue_t rxShell;
+
+extern int shell_run (void);
 
 extern void shell_init (void);
 
