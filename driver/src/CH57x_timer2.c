@@ -15,8 +15,8 @@
 
 /*******************************************************************************
 * Function Name  : TMR2_TimerInit
-* Description    : ¶¨Ê±¹¦ÄÜ³õÊ¼»¯
-* Input          : t: ¶¨Ê±Ê±¼ä£¬»ùÓÚµ±Ç°ÏµÍ³Ê±ÖÓTsys, ×î³¤¶¨Ê±ÖÜÆÚ 67108864
+* Description    : å®šæ—¶åŠŸèƒ½åˆå§‹åŒ–
+* Input          : t: å®šæ—¶æ—¶é—´ï¼ŒåŸºäºå½“å‰ç³»ç»Ÿæ—¶é’ŸTsys, æœ€é•¿å®šæ—¶å‘¨æœŸ 67108864
 					
 * Return         : None
 *******************************************************************************/
@@ -29,8 +29,8 @@ void TMR2_TimerInit( UINT32 t )
 
 /*******************************************************************************
 * Function Name  : TMR2_EXTSingleCounterInit
-* Description    : Íâ²¿ĞÅºÅ¼ÆÊı¹¦ÄÜ³õÊ¼»¯
-* Input          : c: Íâ²¿ËÍÈëĞÅºÅÂö³å¼ÆÊı, ×î³¤¼ÆÊı 67108864	   		
+* Description    : å¤–éƒ¨ä¿¡å·è®¡æ•°åŠŸèƒ½åˆå§‹åŒ–
+* Input          : c: å¤–éƒ¨é€å…¥ä¿¡å·è„‰å†²è®¡æ•°, æœ€é•¿è®¡æ•° 67108864	   		
 * Return         : None
 *******************************************************************************/
 void TMR2_EXTSingleCounterInit( UINT32 c )
@@ -42,12 +42,12 @@ void TMR2_EXTSingleCounterInit( UINT32 c )
 
 /*******************************************************************************
 * Function Name  : TMR2_CountInit
-* Description    : ±ßÑØ¼ÆÊı¹¦ÄÜ³õÊ¼»¯
-* Input          : cap: ²É¼¯¼ÆÊıÀàĞÍ
-                    CAP_NULL - ²»¼ÆÊı
-                    Edge_To_Edge - ¼ÆÊıÈÎÒâ±ßÑØ
-                    FallEdge_To_FallEdge - ¼ÆÊıÏÂ½µÑØ
-					RiseEdge_To_RiseEdge - ¼ÆÊıÉÏÉıÑØ
+* Description    : è¾¹æ²¿è®¡æ•°åŠŸèƒ½åˆå§‹åŒ–
+* Input          : cap: é‡‡é›†è®¡æ•°ç±»å‹
+                    CAP_NULL - ä¸è®¡æ•°
+                    Edge_To_Edge - è®¡æ•°ä»»æ„è¾¹æ²¿
+                    FallEdge_To_FallEdge - è®¡æ•°ä¸‹é™æ²¿
+					RiseEdge_To_RiseEdge - è®¡æ•°ä¸Šå‡æ²¿
 * Return         : None
 *******************************************************************************/
 void TMR2_CountInit( CapModeTypeDef cap )
@@ -61,7 +61,7 @@ void TMR2_CountInit( CapModeTypeDef cap )
 
 /*******************************************************************************
 * Function Name  : TMR2_PWMInit
-* Description    : PWM Êä³ö³õÊ¼»¯
+* Description    : PWM è¾“å‡ºåˆå§‹åŒ–
 * Input          : pr:  select wave polar 	
 					refer to PWMX_PolarTypeDef	
 				   ts:	set pwm repeat times
@@ -80,7 +80,7 @@ void TMR2_PWMInit( PWMX_PolarTypeDef pr, PWM_RepeatTsTypeDef ts )
 
 /*******************************************************************************
 * Function Name  : TMR2_CapInit
-* Description    : Íâ²¿ĞÅºÅ²¶×½¹¦ÄÜ³õÊ¼»¯
+* Description    : å¤–éƒ¨ä¿¡å·æ•æ‰åŠŸèƒ½åˆå§‹åŒ–
 * Input          : cap:  select capture mode 	
 					refer to CapModeTypeDef						
 * Return         : None
@@ -95,14 +95,14 @@ void TMR2_CapInit( CapModeTypeDef cap )
 
 /*******************************************************************************
 * Function Name  : TMR2_DMACfg
-* Description    : ÅäÖÃDMA¹¦ÄÜ
-* Note           : DMAĞëÔÚPWM³õÊ¼»¯ºó½øĞĞÅäÖÃ
+* Description    : é…ç½®DMAåŠŸèƒ½
+* Note           : DMAé¡»åœ¨PWMåˆå§‹åŒ–åè¿›è¡Œé…ç½®
 * Input          : s:  
-                    ENABLE  - ´ò¿ª   
-                    DISABLE - ¹Ø±Õ	
-                   startAddr£º DMA ÆğÊ¼µØÖ·
-                   endAddr£º DMA½áÊøµØÖ·
-                   m£ºÅäÖÃDMAÄ£Ê½
+                    ENABLE  - æ‰“å¼€   
+                    DISABLE - å…³é—­	
+                   startAddrï¼š DMA èµ·å§‹åœ°å€
+                   endAddrï¼š DMAç»“æŸåœ°å€
+                   mï¼šé…ç½®DMAæ¨¡å¼
 * Return         : None
 *******************************************************************************/
 void TMR2_DMACfg( UINT8 s, UINT16 startAddr, UINT16 endAddr, DMAModeTypeDef m )

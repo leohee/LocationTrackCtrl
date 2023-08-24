@@ -24,11 +24,11 @@
 #define ROM_UUID_ADDR        0x40608         // chip UID address ( ID-48bit + CKS-16bit )
 #define ROM_MAC_ADDR         0x40608         // NET MAC address 48bit
 
-// »ñÈ¡Î¨Ò»ID
-void GetUniqueID(PUINT8 buf);                                           /* »ñÈ¡Ğ¾Æ¬Î¨Ò»ID£¬Ğ¡¶ËÄ£Ê½£¬6B-ID£¬ 2B-CKS */    
+// è·å–å”¯ä¸€ID
+void GetUniqueID(PUINT8 buf);                                           /* è·å–èŠ¯ç‰‡å”¯ä¸€IDï¼Œå°ç«¯æ¨¡å¼ï¼Œ6B-IDï¼Œ 2B-CKS */    
      
-// »ñÈ¡ÍøÂçMAC
-void GetMACAddress(PUINT8 buf);                                         /* »ñÈ¡ÍøÂçMAC£¬Ğ¡¶ËÄ£Ê½£¬6B-MAC */   
+// è·å–ç½‘ç»œMAC
+void GetMACAddress(PUINT8 buf);                                         /* è·å–ç½‘ç»œMACï¼Œå°ç«¯æ¨¡å¼ï¼Œ6B-MAC */   
 
 
 UINT8 FlashBlockErase(UINT32 addr);     

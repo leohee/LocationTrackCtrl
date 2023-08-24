@@ -47,27 +47,27 @@
 /**
   * @brief  unit of controllable power supply 
   */
-#define UNIT_SYS_LSE                RB_CLK_XT32K_PON        // �ⲿ32K ʱ����
-#define UNIT_SYS_LSI                RB_CLK_INT32K_PON       // �ڲ�32K ʱ����
-#define UNIT_SYS_HSE                RB_CLK_XT32M_PON        // �ⲿ32M ʱ����
-#define UNIT_SYS_HSI               	RB_CLK_INT32M_PON       // �ڲ�32M ʱ����
-#define UNIT_SYS_PLL                RB_CLK_PLL_PON          // PLL ʱ����
-#define UNIT_ETH_PHY                (0x80)                  // ��̫���շ��� ETH-PHY 
+#define UNIT_SYS_LSE                RB_CLK_XT32K_PON        // 外部32K 时钟振荡
+#define UNIT_SYS_LSI                RB_CLK_INT32K_PON       // 内部32K 时钟振荡
+#define UNIT_SYS_HSE                RB_CLK_XT32M_PON        // 外部32M 时钟振荡
+#define UNIT_SYS_HSI               	RB_CLK_INT32M_PON       // 内部32M 时钟振荡
+#define UNIT_SYS_PLL                RB_CLK_PLL_PON          // PLL 时钟振荡
+#define UNIT_ETH_PHY                (0x80)                  // 以太网收发器 ETH-PHY 
 
 
-void PWR_DCDCCfg( UINT8 s );	                              /* �ڲ�DC/DC��Դ���� */ 
-void PWR_UnitModCfg( UINT8 s, UINT8 unit );                   /* �ɿص�Ԫģ��ĵ�Դ���� */
-void PWR_PeriphClkCfg( UINT8 s, UINT16 perph );               /* ����ʱ�ӿ���λ */
+void PWR_DCDCCfg( UINT8 s );	                              /* 内部DC/DC电源控制 */ 
+void PWR_UnitModCfg( UINT8 s, UINT8 unit );                   /* 可控单元模块的电源控制 */
+void PWR_PeriphClkCfg( UINT8 s, UINT16 perph );               /* 外设时钟控制位 */
 
-void PowerMonitor( UINT8 s );                                 /* ��Դ��ѹ��ع��ܿ��� */
+void PowerMonitor( UINT8 s );                                 /* 电源电压监控功能控制 */
 
-void PWR_PeriphWakeUpCfg( UINT8 s, UINT16 perph );              /* ˯�߻���Դ���� */
-void LowPower_Idle( void );                                 /* �͹���-IDLEģʽ */	 
-void LowPower_Halt_1( void );                               /* �͹���-Halt_1ģʽ */
-void LowPower_Halt_2( void );                               /* �͹���-Halt_2ģʽ */
-void LowPower_Sleep( UINT8 rm );                            /* �͹���-Sleepģʽ */
-void LowPower_Shutdown( UINT8 rm );                         /* �͹���-Shutdownģʽ */
-void EnterCodeUpgrade( void );								/* ����BOOT����׼���������� */
+void PWR_PeriphWakeUpCfg( UINT8 s, UINT16 perph );              /* 睡眠唤醒源配置 */
+void LowPower_Idle( void );                                 /* 低功耗-IDLE模式 */	 
+void LowPower_Halt_1( void );                               /* 低功耗-Halt_1模式 */
+void LowPower_Halt_2( void );                               /* 低功耗-Halt_2模式 */
+void LowPower_Sleep( UINT8 rm );                            /* 低功耗-Sleep模式 */
+void LowPower_Shutdown( UINT8 rm );                         /* 低功耗-Shutdown模式 */
+void EnterCodeUpgrade( void );								/* 跳入BOOT程序，准备代码升级 */
 
 	 
 	 

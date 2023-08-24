@@ -14,7 +14,7 @@
 
 /*******************************************************************************
 * Function Name  : SystemInit
-* Description    : ϵͳʱ��Ĭ�ϳ�ʼ��
+* Description    : 系统时钟默认初始化
 * Input          : None			   				
 * Return         : None
 *******************************************************************************/
@@ -44,13 +44,13 @@ void SystemInit(void)
     R8_SAFE_ACCESS_SIG = 0;
     
     mDelayuS(10);
-    /* ������ѹ��� */
+    /* 开启电压监控 */
     PowerMonitor( ENABLE );
 }
 
 /*******************************************************************************
 * Function Name  : SYS_ClkXT32MPon
-* Description    : ���ⲿ32MHz������Դ���ȴ����ȶ�
+* Description    : 打开外部32MHz振荡器电源并等待其稳定
 * Input          : None			   				
 * Return         : None
 *******************************************************************************/
@@ -63,7 +63,7 @@ void SYS_ClkXT32MPon(void)
     R8_HFCK_PWR_CTRL |= RB_CLK_XT32M_PON;
     R8_SAFE_ACCESS_SIG = 0;
 
-    /* ��40MHzʱ�Ӽ���1200us��ʱʱ�� */
+    /* 以40MHz时钟计算1200us延时时间 */
     for (i = 0; i < 1200; i++) {
         for (j = 0; j < 4; j++) {
             __nop();
@@ -73,7 +73,7 @@ void SYS_ClkXT32MPon(void)
 
 /*******************************************************************************
 * Function Name  : SYS_ClkXT32MPon
-* Description    : ���ڲ�32MHz������Դ���ȴ����ȶ�
+* Description    : 打开内部32MHz振荡器电源并等待其稳定
 * Input          : None			   				
 * Return         : None
 *******************************************************************************/
@@ -86,7 +86,7 @@ void SYS_ClkINT32MPon(void)
     R8_HFCK_PWR_CTRL |= RB_CLK_INT32M_PON;
     R8_SAFE_ACCESS_SIG = 0;
 
-    /* ��40MHzʱ�Ӽ���1us��ʱʱ�� */
+    /* 以40MHz时钟计算1us延时时间 */
     for (i = 0; i < 4; i++) {
         __nop();
     }
@@ -94,7 +94,7 @@ void SYS_ClkINT32MPon(void)
 
 /*******************************************************************************
 * Function Name  : SYS_ClkXT32MPon
-* Description    : ��PLL��Դ���ȴ����ȶ�
+* Description    : 打开PLL电源并等待其稳定
 * Input          : None			   				
 * Return         : None
 *******************************************************************************/
@@ -107,7 +107,7 @@ void SYS_PLLPon(void)
     R8_HFCK_PWR_CTRL |= RB_CLK_PLL_PON;
     R8_SAFE_ACCESS_SIG = 0;  
 
-    /* ��40MHzʱ�Ӽ���3000us��ʱʱ�� */
+    /* 以40MHz时钟计算3000us延时时间 */
     for (i = 0; i < 3000; i++) {
         for (j = 0; j < 4; j++) {
             __nop();
@@ -116,8 +116,8 @@ void SYS_PLLPon(void)
 }
 /*******************************************************************************
 * Function Name  : SetSysClock
-* Description    : ����ϵͳ����ʱ��
-* Input          : sc: ϵͳʱ��Դѡ��
+* Description    : 重设系统运行时钟
+* Input          : sc: 系统时钟源选择
 					refer to SYS_CLKTypeDef
 * Return         : None
 *******************************************************************************/
@@ -195,7 +195,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
             R8_HFCK_PWR_CTRL &= ~RB_CLK_XT32M_PON;
             break;
         case CLK_SOURCE_PLL_40MHz:
-            /* PLLĬ��ʹ���ⲿ32MHzʱ��Դ��Ƶ */
+            /* PLL默认使用外部32MHz时钟源倍频 */
             if (!SYS_IsClkXT32MPon()) {
                 SYS_ClkXT32MPon();
             }
@@ -209,7 +209,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
             R16_CLK_SYS_CFG = RB_CLK_OSC32M_XT | (1 << 6) | 12;
             break;
         case CLK_SOURCE_PLL_32MHz:
-            /* PLLĬ��ʹ���ⲿ32MHzʱ��Դ��Ƶ */
+            /* PLL默认使用外部32MHz时钟源倍频 */
             if (!SYS_IsClkXT32MPon()) {
                 SYS_ClkXT32MPon();
             }
@@ -223,7 +223,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
             R16_CLK_SYS_CFG = RB_CLK_OSC32M_XT | (1 << 6) | 15;
             break;
         case CLK_SOURCE_PLL_24MHz:
-            /* PLLĬ��ʹ���ⲿ32MHzʱ��Դ��Ƶ */
+            /* PLL默认使用外部32MHz时钟源倍频 */
             if (!SYS_IsClkXT32MPon()) {
                 SYS_ClkXT32MPon();
             }
@@ -237,7 +237,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
             R16_CLK_SYS_CFG = RB_CLK_OSC32M_XT | (1 << 6) | 20;
             break;
         case CLK_SOURCE_PLL_20MHz:
-            /* PLLĬ��ʹ���ⲿ32MHzʱ��Դ��Ƶ */
+            /* PLL默认使用外部32MHz时钟源倍频 */
             if (!SYS_IsClkXT32MPon()) {
                 SYS_ClkXT32MPon();
             }
@@ -251,7 +251,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
             R16_CLK_SYS_CFG = RB_CLK_OSC32M_XT | (1 << 6) | 24;
             break;
         case CLK_SOURCE_PLL_16MHz:
-            /* PLLĬ��ʹ���ⲿ32MHzʱ��Դ��Ƶ */
+            /* PLL默认使用外部32MHz时钟源倍频 */
             if (!SYS_IsClkXT32MPon()) {
                 SYS_ClkXT32MPon();
             }
@@ -272,7 +272,7 @@ void SetSysClock(SYS_CLKTypeDef sc)
 
 /*******************************************************************************
 * Function Name  : GetSysClock
-* Description    : ��ȡ��ǰϵͳʱ��
+* Description    : 获取当前系统时钟
 * Input          : None
 * Return         : Hz
 *******************************************************************************/
@@ -281,26 +281,26 @@ UINT32 GetSysClock( void )
 	UINT16  rev;
 	
 	rev = R16_CLK_SYS_CFG & 0xff;		
-	if( (rev & RB_CLK_SYS_MOD) == (2<<6) ){				// 32M����Ƶ
+	if( (rev & RB_CLK_SYS_MOD) == (2<<6) ){				// 32M做主频
 	    return (32000000);
 	}
-	else if( (rev & RB_CLK_SYS_MOD) == (1<<6) ){		// PLL���з�Ƶ
+	else if( (rev & RB_CLK_SYS_MOD) == (1<<6) ){		// PLL进行分频
 	    return (480000000/(rev&0x1f));		
 	}
-	else if( (rev & RB_CLK_SYS_MOD) == (0<<6) ){		// 32M���з�Ƶ
+	else if( (rev & RB_CLK_SYS_MOD) == (0<<6) ){		// 32M进行分频
 		return (32000000/(rev&0x1f));	
 	}
-	else {												// 32K����Ƶ
+	else {												// 32K做主频
 		return (32000);
 	}	
 }
 
 /*******************************************************************************
 * Function Name  : HClk32M_Select
-* Description    : 32M ��Ƶʱ����Դ
+* Description    : 32M 高频时钟来源
 * Input          : hc: 
-					Clk32M_HSI   -   ѡ���ڲ�32M
-					Clk32M_HSE   -   ѡ���ⲿ32M
+					Clk32M_HSI   -   选择内部32M
+					Clk32M_HSE   -   选择外部32M
 * Return         : None
 *******************************************************************************/
 void HClk32M_Select( HClk32MTypeDef hc)
@@ -316,10 +316,10 @@ void HClk32M_Select( HClk32MTypeDef hc)
 
 /*******************************************************************************
 * Function Name  : LClk32k_PON
-* Description    : 32K ��Ƶ������Դ����
+* Description    : 32K 低频振荡器电源控制
 * Input          : hc: 
-					Clk32K_LSI   -   ѡ���ڲ�32K
-					Clk32K_LSE   -   ѡ���ⲿ32K
+					Clk32K_LSI   -   选择内部32K
+					Clk32K_LSE   -   选择外部32K
 * Return         : None
 *******************************************************************************/
 void LClk32k_Power(LClk32KTypeDef hc, bool enable)
@@ -358,10 +358,10 @@ void LClk32k_Power(LClk32KTypeDef hc, bool enable)
 
 /*******************************************************************************
 * Function Name  : LClk32K_Select
-* Description    : 32K ��Ƶʱ����Դ
+* Description    : 32K 低频时钟来源
 * Input          : hc: 
-					Clk32K_LSI   -   ѡ���ڲ�32K
-					Clk32K_LSE   -   ѡ���ⲿ32K
+					Clk32K_LSI   -   选择内部32K
+					Clk32K_LSE   -   选择外部32K
 * Return         : None
 *******************************************************************************/
 void LClk32K_Select( LClk32KTypeDef hc)
@@ -380,7 +380,7 @@ void LClk32K_Select( LClk32KTypeDef hc)
 
 /*******************************************************************************
 * Function Name  : HSECFG_Current
-* Description    : HSE���� ƫ�õ�������
+* Description    : HSE晶体 偏置电流配置
 * Input          : c: 75%,100%,125%,150%
 * Return         : None
 *******************************************************************************/
@@ -399,7 +399,7 @@ void HSECFG_Current( HSECurrentTypeDef c )
 
 /*******************************************************************************
 * Function Name  : HSECFG_Capacitance
-* Description    : HSE���� ���ص�������
+* Description    : HSE晶体 负载电容配置
 * Input          : c: refer to HSECapTypeDef
 * Return         : None
 *******************************************************************************/
@@ -418,7 +418,7 @@ void HSECFG_Capacitance( HSECapTypeDef c )
 
 /*******************************************************************************
 * Function Name  : LSECFG_Current
-* Description    : LSE���� ƫ�õ�������
+* Description    : LSE晶体 偏置电流配置
 * Input          : c: 70%,100%,140%,200%
 * Return         : None
 *******************************************************************************/
@@ -437,7 +437,7 @@ void LSECFG_Current( LSECurrentTypeDef c )
 
 /*******************************************************************************
 * Function Name  : LSECFG_Capacitance
-* Description    : LSE���� ���ص�������
+* Description    : LSE晶体 负载电容配置
 * Input          : c: refer to LSECapTypeDef
 * Return         : None
 *******************************************************************************/
@@ -455,9 +455,9 @@ void LSECFG_Capacitance( LSECapTypeDef c )
 }
 /*******************************************************************************
 * Function Name  : Calibration_LSI
-* Description    : У׼�ڲ�32Kʱ��
+* Description    : 校准内部32K时钟
 * Input          : None
-* Return         : ��ǧ��֮����λ��
+* Return         : 误差：千分之（单位）
 *******************************************************************************/
 // 0-26030Hz    1023-44220Hz
 UINT16 Calibration_LSI( void )
@@ -470,29 +470,29 @@ UINT16 Calibration_LSI( void )
 	signed short   diff_1, diff_2, diffc;
     UINT8  k=0;
     
-    /* ���ݵ�ǰʱ�ӻ�ȡ���ֵ��б�ʣ�T-step�� */
+    /* 根据当前时钟获取标称值和斜率（T-step） */
     rev = R16_CLK_SYS_CFG & 0xff;	
     // CNT_STEP_K=Fsys*5*(1/26030 - 1/44220)/1023;
-	if( (rev & RB_CLK_SYS_MOD) == (2<<6) ){				// 32M����Ƶ
+	if( (rev & RB_CLK_SYS_MOD) == (2<<6) ){				// 32M做主频
 	    calv = ((5*32000000+(CAB_LSIFQ>>1))/CAB_LSIFQ);
         CNT_STEP_K = -3;
 	}
-	else if( (rev & RB_CLK_SYS_MOD) == (1<<6) ){		// PLL���з�Ƶ
+	else if( (rev & RB_CLK_SYS_MOD) == (1<<6) ){		// PLL进行分频
 	    calv = (((UINT32)5*480000000/(rev&0x1f)+(CAB_LSIFQ>>1))/CAB_LSIFQ);		
         CNT_STEP_K =( -37-((rev&0x1f)-1))/(rev&0x1f);
 	}
-	else if( (rev & RB_CLK_SYS_MOD) == (0<<6) ){		// 32M���з�Ƶ
+	else if( (rev & RB_CLK_SYS_MOD) == (0<<6) ){		// 32M进行分频
 		calv = ((5*32000000/(rev&0x1f)+(CAB_LSIFQ>>1))/CAB_LSIFQ);	
         CNT_STEP_K = ( -3-((rev&0x1f)-1))/(rev&0x1f);
 	}
-	else {												// 32K����Ƶ
+	else {												// 32K做主频
 		calv = (5);
         CNT_STEP_K = 0;
 	}
     
-	/* У׼ */
-	basev = ( calv &0xfff );			        // ��ȡУ׼���ֵ    
-	// loc = 1023*(f-26030)/f/((44220-26030)/44220)  ��������
+	/* 校准 */
+	basev = ( calv &0xfff );			        // 获取校准标称值    
+	// loc = 1023*(f-26030)/f/((44220-26030)/44220)  经验曲线
     loc = R16_INT32K_TUNE;
     diff_2 = 0;
     diffc = 0;
@@ -507,23 +507,23 @@ UINT16 Calibration_LSI( void )
     	R16_INT32K_TUNE = loc;
         R8_SAFE_ACCESS_SIG = 0;
                 
-		/* ��ȡ��ǰֵ */
+		/* 读取当前值 */
         while(!(R8_OSC_CAL_CTRL&RB_OSC_CNT_HALT));
-        i = R16_OSC_CAL_CNT;			// ���ڶ���
+        i = R16_OSC_CAL_CNT;			// 用于丢弃
         while(R8_OSC_CAL_CTRL&RB_OSC_CNT_HALT);		
         while(!(R8_OSC_CAL_CTRL&RB_OSC_CNT_HALT));
-        i = R16_OSC_CAL_CNT;			// ʵʱУ׼�����ֵ	
+        i = R16_OSC_CAL_CNT;			// 实时校准后采样值	
         k++;
         
         diff_1 = i-basev;
         
         if( diff_1 == 0 ){
-            return 0;		// У׼����
+            return 0;		// 校准正好
         }
-        else if((diff_1*diff_2)<0){					// ��������֮��
+        else if((diff_1*diff_2)<0){					// 处于两点之间
         	if((diffc == 1) || (diffc == -1) || (diffc == 0))
             {            
-                // ���������
+                // 都变成正数
                 if( diff_2<0 )	diff_2 = ~(diff_2-1);
                 else     		diff_1 = ~(diff_1-1);
                     
@@ -533,21 +533,21 @@ UINT16 Calibration_LSI( void )
                     R16_INT32K_TUNE = loc_t;
                     R8_SAFE_ACCESS_SIG = 0;
                     
-                    return (diff_2*1000/basev);				// �������ֵ��ǧ��֮
+                    return (diff_2*1000/basev);				// 返回误差值，千分之
                 }
                 else	return(diff_1*1000/basev);	                
             }
         }
         	
-        // ������һ��ֵ	
+        // 保存上一次值	
         diff_2 = diff_1;		
         loc_t = loc;        
         diffc = diff_1/CNT_STEP_K;
         loc = loc - diffc;
         if( loc == loc_t )
         {
-            if( diff_1 > 0 )	loc = loc+1;	// ��ǰƵ��ƫС 
-            else				loc = loc-1;	// ��ǰƵ��ƫ�� 
+            if( diff_1 > 0 )	loc = loc+1;	// 当前频率偏小 
+            else				loc = loc-1;	// 当前频率偏大 
         }
     }while( k<20 );	
     
@@ -557,19 +557,19 @@ UINT16 Calibration_LSI( void )
 
 /*******************************************************************************
 * Function Name  : RTCInitTime
-* Description    : RTCʱ�ӳ�ʼ����ǰʱ��
-* Input          : y: ����ʱ�� - ��
+* Description    : RTC时钟初始化当前时间
+* Input          : y: 配置时间 - 年
 					MAX_Y = BEGYEAR + 44
-					 mon: ����ʱ�� - ��
+					 mon: 配置时间 - 月
 					MAX_MON = 12
-					 d: ����ʱ�� - ��
+					 d: 配置时间 - 日
 					MAX_D = 31
 
-					 h: ����ʱ�� - Сʱ
+					 h: 配置时间 - 小时
 					MAX_H = 23
-				   m: ����ʱ�� - ����
+				   m: 配置时间 - 分钟
 					MAX_M = 59
-				   s: ����ʱ�� - ��
+				   s: 配置时间 - 秒
 				  MAX_S = 59
 * Return         : None
 *******************************************************************************/
@@ -615,18 +615,18 @@ void RTC_InitTime( UINT16 y, UINT16 mon, UINT16 d, UINT16 h, UINT16 m, UINT16 s 
 
 /*******************************************************************************
 * Function Name  : RTC_GetTime
-* Description    : ��ȡ��ǰʱ��
-* Input          : y: ��ȡ����ʱ�� - ��
+* Description    : 获取当前时间
+* Input          : y: 获取到的时间 - 年
 					MAX_Y = BEGYEAR + 44
-					 mon: ��ȡ����ʱ�� - ��
+					 mon: 获取到的时间 - 月
 					MAX_MON = 12
-					 d: ��ȡ����ʱ�� - ��
+					 d: 获取到的时间 - 日
 					MAX_D = 31
-					 ph: ��ȡ����ʱ�� - Сʱ
+					 ph: 获取到的时间 - 小时
 					MAX_H = 23
-				   pm: ��ȡ����ʱ�� - ����
+				   pm: 获取到的时间 - 分钟
 					MAX_M = 59
-				   ps: ��ȡ����ʱ�� - ��
+				   ps: 获取到的时间 - 秒
 				  MAX_S = 59
 * Return         : None
 *******************************************************************************/
@@ -663,8 +663,8 @@ void RTC_GetTime( PUINT16 py, PUINT16 pmon, PUINT16 pd, PUINT16 ph, PUINT16 pm, 
 
 /*******************************************************************************
 * Function Name  : RTC_SetCycle32k
-* Description    : ����LSE/LSIʱ�ӣ����õ�ǰRTC ������
-* Input          : cyc: �������ڼ�����ֵ - cycle
+* Description    : 基于LSE/LSI时钟，配置当前RTC 周期数
+* Input          : cyc: 配置周期计数初值 - cycle
 					MAX_CYC = 0xA8BFFFFF = 2831155199
 * Return         : None
 *******************************************************************************/
@@ -685,9 +685,9 @@ void RTC_SetCycle32k( UINT32 cyc )
 
 /*******************************************************************************
 * Function Name  : RTC_GetCycle32k
-* Description    : ����LSE/LSIʱ�ӣ���ȡ��ǰRTC ������
+* Description    : 基于LSE/LSI时钟，获取当前RTC 周期数
 * Input          : None
-* Return         : ���ص�ǰ��������MAX_CYC = 0xA8BFFFFF = 2831155199
+* Return         : 返回当前周期数，MAX_CYC = 0xA8BFFFFF = 2831155199
 *******************************************************************************/
 UINT32 RTC_GetCycle32k( void )
 {
@@ -702,7 +702,7 @@ UINT32 RTC_GetCycle32k( void )
 
 /*******************************************************************************
 * Function Name  : RTC_TMRFunCfg
-* Description    : RTC��ʱģʽ����
+* Description    : RTC定时模式配置
 * Input          : t: 
 					refer to RTC_TMRCycTypeDef
 * Return         : None
@@ -718,8 +718,8 @@ void RTC_TMRFunCfg( RTC_TMRCycTypeDef t )
 
 /*******************************************************************************
 * Function Name  : RTC_TRIGFunCfg
-* Description    : RTCʱ�䴥��ģʽ����
-* Input          : cyc: ��Ե�ǰʱ��Ĵ������ʱ�䣬����LSE/LSIʱ��������
+* Description    : RTC时间触发模式配置
+* Input          : cyc: 相对当前时间的触发间隔时间，基于LSE/LSI时钟周期数
 * Return         : None
 *******************************************************************************/
 void RTC_TRIGFunCfg( UINT32 cyc )
@@ -739,8 +739,8 @@ void RTC_TRIGFunCfg( UINT32 cyc )
 
 /*******************************************************************************
 * Function Name  : RTC_ModeFunDisable
-* Description    : RTC ģʽ���ܹر�
-* Input          : m: ��Ҫ�رյĵ�ǰģʽ
+* Description    : RTC 模式功能关闭
+* Input          : m: 需要关闭的当前模式
 * Return         : None
 *******************************************************************************/
 void RTC_ModeFunDisable( RTC_MODETypeDef m )
@@ -758,12 +758,12 @@ void RTC_ModeFunDisable( RTC_MODETypeDef m )
 
 /*******************************************************************************
 * Function Name  : RTC_GetITFlag
-* Description    : ��ȡRTC�жϱ�־
+* Description    : 获取RTC中断标志
 * Input          : f: 
 					refer to RTC_EVENTTypeDef
-* Return         : �жϱ�־״̬:
-					0     -  	δ�����¼�
-				   (!0)   -  	�����¼�
+* Return         : 中断标志状态:
+					0     -  	未发生事件
+				   (!0)   -  	发生事件
 *******************************************************************************/
 UINT8 RTC_GetITFlag( RTC_EVENTTypeDef f )
 {
@@ -775,7 +775,7 @@ UINT8 RTC_GetITFlag( RTC_EVENTTypeDef f )
 
 /*******************************************************************************
 * Function Name  : RTC_ClearITFlag
-* Description    : ���RTC�жϱ�־
+* Description    : 清除RTC中断标志
 * Input          : f: 
 					refer to RTC_EVENTTypeDef
 * Return         : None

@@ -45,7 +45,7 @@
 #endif   
 
 /**
- * @brief  32KÊ±ÖÓ£¨Hz£©
+ * @brief  32Kæ—¶é’Ÿï¼ˆHzï¼‰
  */
 #ifdef CLK_OSC32K
 #if ( CLK_OSC32K == 1 )
