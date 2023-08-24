@@ -1,4 +1,14 @@
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_common.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #ifndef __CH57x_COMM_H__
 #define __CH57x_COMM_H__
@@ -34,6 +44,19 @@
 #define  FREQ_SYS		32000000   
 #endif   
 
+/**
+ * @brief  32K ±÷”£®Hz£©
+ */
+#ifdef CLK_OSC32K
+#if ( CLK_OSC32K == 1 )
+#define CAB_LSIFQ       32000
+#else
+#define CAB_LSIFQ       32768
+#endif
+#else
+#define CAB_LSIFQ       32000
+#endif
+
 #include <string.h>
 #include "CH57x_clk.h"
 #include "CH57x_uart.h"
@@ -44,12 +67,19 @@
 #include "CH57x_pwm.h"	 
 #include "CH57x_adc.h"
 #include "CH57x_sys.h"
-#include "CH57x_timer0.h"	 
+#include "CH57x_timer.h"	 
 #include "CH57x_spi.h"
 #include "CH57x_usbdev.h"
 #include "CH57x_usbhost.h"
-	 
-	 
+
+
+
+
+  
+#define DelayMs(x)      mDelaymS(x)	  
+#define DelayUs(x)      mDelayuS(x)	  
+
+
 #ifdef __cplusplus
 }
 #endif

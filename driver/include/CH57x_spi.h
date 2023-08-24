@@ -1,4 +1,14 @@
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_spi.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 
 #ifndef __CH57x_SPI_H__
@@ -69,6 +79,9 @@ UINT8 SPI0_SlaveRecvByte( void );			                /* ´Ó»úÄ£Ê½£¬½ÓÊÕÒ»×Ö½ÚÊý¾Ý 
 void SPI0_SlaveTrans( UINT8 *pbuf, UINT16 len );            /* ´Ó»úÄ£Ê½£¬·¢ËÍ¶à×Ö½ÚÊý¾Ý */
 void SPI0_SlaveRecv( PUINT8 pbuf, UINT16 len );             /* ´Ó»úÄ£Ê½£¬½ÓÊÕ¶à×Ö½ÚÊý¾Ý  */
 
+void SPI0_SlaveDMATrans( PUINT8 pbuf, UINT16 len);          /* ´Ó»úÄ£Ê½£¬DMA·½Ê½·¢ËÍ¶à×Ö½ÚÊý¾Ý */
+void SPI0_SlaveDMARecv( PUINT8 pbuf, UINT16 len);           /* ´Ó»úÄ£Ê½£¬DMA·½Ê½½ÓÊÕ¶à×Ö½ÚÊý¾Ý */
+
 // refer to SPI0 interrupt bit define
 #define SPI0_ITCfg(s,f)			((s)?(R8_SPI0_INTER_EN|=f):(R8_SPI0_INTER_EN&=~f))
 #define SPI0_GetITFlag(f)		(R8_SPI0_INT_FLAG&f)		/* »ñÈ¡ÖÐ¶Ï±êÖ¾×´Ì¬£¬0-Î´ÖÃÎ»£¬(!0)-´¥·¢ */
@@ -88,6 +101,7 @@ UINT8 SPI1_MasterRecvByte( void );                          /* ½ÓÊÕµ¥×Ö½Ú (buffe
 void SPI1_MasterTrans( UINT8 *pbuf, UINT16 len );           /* Ê¹ÓÃFIFOÁ¬Ðø·¢ËÍ¶à×Ö½Ú */	 
 void SPI1_MasterRecv( UINT8 *pbuf, UINT16 len );            /* Ê¹ÓÃFIFOÁ¬Ðø½ÓÊÕ¶à×Ö½Ú */
 
+
 // refer to SPI1 interrupt bit define
 #define SPI1_ITCfg(s,f)			((s)?(R8_SPI1_INTER_EN|=f):(R8_SPI1_INTER_EN&=~f))
 #define SPI1_GetITFlag(f)		(R8_SPI1_INT_FLAG&f)		/* »ñÈ¡ÖÐ¶Ï±êÖ¾×´Ì¬£¬0-Î´ÖÃÎ»£¬(!0)-´¥·¢ */
@@ -97,7 +111,7 @@ void SPI1_MasterRecv( UINT8 *pbuf, UINT16 len );            /* Ê¹ÓÃFIFOÁ¬Ðø½ÓÊÕ¶
 
 	 
 #ifdef __cplusplus
-
+}
 #endif
 
 #endif  // __CH57x_SPI_H__	

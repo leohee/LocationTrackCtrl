@@ -1,4 +1,14 @@
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_pwr.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 
 #ifndef __CH57x_PWR_H__
@@ -49,13 +59,15 @@ void PWR_DCDCCfg( UINT8 s );	                              /* 内部DC/DC电源控制 
 void PWR_UnitModCfg( UINT8 s, UINT8 unit );                   /* 可控单元模块的电源控制 */
 void PWR_PeriphClkCfg( UINT8 s, UINT16 perph );               /* 外设时钟控制位 */
 
+void PowerMonitor( UINT8 s );                                 /* 电源电压监控功能控制 */
+
 void PWR_PeriphWakeUpCfg( UINT8 s, UINT16 perph );              /* 睡眠唤醒源配置 */
 void LowPower_Idle( void );                                 /* 低功耗-IDLE模式 */	 
 void LowPower_Halt_1( void );                               /* 低功耗-Halt_1模式 */
 void LowPower_Halt_2( void );                               /* 低功耗-Halt_2模式 */
 void LowPower_Sleep( UINT8 rm );                            /* 低功耗-Sleep模式 */
 void LowPower_Shutdown( UINT8 rm );                         /* 低功耗-Shutdown模式 */
-
+void EnterCodeUpgrade( void );								/* 跳入BOOT程序，准备代码升级 */
 
 	 
 	 

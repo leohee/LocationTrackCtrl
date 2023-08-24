@@ -1,10 +1,14 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : CH57x_gpio.c
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2018/12/15
-* Description 
-*******************************************************************************/
+ * File Name          : CH57x_gpio.c
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2018/12/15
+ * Description 
+ *********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #include "CH57x_common.h"
 
@@ -222,10 +226,10 @@ void GPIOPinRemap( UINT8 s, UINT16 perph )
 
 /*******************************************************************************
 * Function Name  : GPIOAGPPCfg
-* Description    : 模拟外设GPIO引脚数字功能控制
+* Description    : 模拟外设GPIO引脚功能控制
 * Input          : s: 
-					ENABLE  - 打开数字信号功能     
-					DISABLE - 关闭数字功信号能 
+					ENABLE  - 打开模拟外设功能，关闭数字功能     
+					DISABLE - 启用数字功能，关闭模拟外设功能 
 				   perph:
 					RB_PIN_ADC0_1_IE	  -  ADC0-1通道
 					RB_PIN_ADC2_3_IE	  -  ADC2-3通道
@@ -247,6 +251,6 @@ void GPIOPinRemap( UINT8 s, UINT16 perph )
 *******************************************************************************/
 void GPIOAGPPCfg( UINT8 s, UINT16 perph )
 {
-    if( s )     R16_PIN_ANALOG_IE &= ~perph;
-    else        R16_PIN_ANALOG_IE |= perph;
+    if( s )     R16_PIN_ANALOG_IE |= perph;
+    else        R16_PIN_ANALOG_IE &= ~perph;
 }

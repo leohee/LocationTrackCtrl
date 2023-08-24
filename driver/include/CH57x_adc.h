@@ -1,5 +1,14 @@
-
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_adc.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #ifndef __CH57x_ADC_H__
 #define __CH57x_ADC_H__
@@ -75,8 +84,6 @@ typedef enum
 }ADC_SignalPGATypeDef;
 
 
-extern signed short  RoughCalib_Value;		// ADC粗调偏差值
-
 // refer to ADC_SingleChannelTypeDef
 #define		ADC_ChannelCfg( d )		(R8_ADC_CHANNEL = d)												/* 设置 ADC 采样通道 */
 // refer to ADC_SampClkTypeDef
@@ -92,10 +99,10 @@ void ADC_InterTSSampInit( void );																	/* 内置温度传感器采样初始化 */
 void ADC_InterBATSampInit( void );																	/* 内置电池电压采样初始化 */
 
 UINT16 ADC_ExcutSingleConver( void );																/* ADC执行单次转换 */
-void ADC_DataCalib_Rough( void ); 
+signed short ADC_DataCalib_Rough( void ); 
 void ADC_DataCalib_Fine( PUINT16 dat, ADC_SignalPGATypeDef ga );
 UINT16 TouchKey_ExcutSingleConver( UINT8 d );														/* TouchKey转换后数据 */
-UINT8 ADC_GetCurrentTS( UINT16 ts_v );                                                              /* 获取当前采样的温度值（℃） */
+int ADC_GetCurrentTS( UINT16 ts_v );                                                              /* 获取当前采样的温度值（℃） */
 
 #define ADC_ReadConverValue()       (R16_ADC_DATA)                                                  /* 读取转换后的数值 */
 #define ADC_StartUp()               (R8_ADC_CONVERT = RB_ADC_START)									/* ADC启动转换 */

@@ -1,10 +1,14 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : CH57x_SYS.c
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2018/12/15
-* Description 
-*******************************************************************************/
+ * File Name          : CH57x_SYS.c
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2018/12/15
+ * Description 
+ *********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #include "CH57x_common.h"
 
@@ -36,6 +40,7 @@ void SYS_ResetExecute( void )
     R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;		
     R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
     R8_RST_WDOG_CTRL |= RB_SOFTWARE_RESET;
+    R8_SAFE_ACCESS_SIG = 0;
 }
 
 /*******************************************************************************
@@ -67,7 +72,7 @@ void SYS_RecoverIrq( UINT32 irq_status )
 * Input          : None
 * Return         : 当前计数值
 *******************************************************************************/
-UINT32 SYS_GetSysTickCnt( void )
+uint32_t SYS_GetSysTickCnt( void )
 {
 	return(SysTick->VAL );
 }
@@ -84,7 +89,7 @@ void  WWDG_ITCfg( UINT8 s )
 	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
 	if(s == DISABLE)		R8_RST_WDOG_CTRL&=~RB_WDOG_INT_EN;
 	else 					R8_RST_WDOG_CTRL|=RB_WDOG_INT_EN;
-	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG0;	
+	R8_SAFE_ACCESS_SIG = 0;	
 }
 
 /*******************************************************************************
@@ -99,7 +104,7 @@ void WWDG_ResetCfg( UINT8 s )
 	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
 	if(s == DISABLE)		R8_RST_WDOG_CTRL&=~RB_WDOG_RST_EN;
 	else 					R8_RST_WDOG_CTRL|=RB_WDOG_RST_EN;
-	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG0;	
+	R8_SAFE_ACCESS_SIG = 0;	
 }
 
 /*******************************************************************************
@@ -113,17 +118,17 @@ void WWDG_ClearFlag( void )
 	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;		
 	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
 	R8_RST_WDOG_CTRL |= RB_WDOG_INT_FLAG;
-	R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG0;	
+	R8_SAFE_ACCESS_SIG = 0;	
 }
 
 
 /*******************************************************************************
-* Function Name  : DelsyUs
+* Function Name  : mDelayuS
 * Description    : uS 延时
 * Input          : t: 时间参数
 * Return         : None
 *******************************************************************************/
-void DelsyUs( UINT16 t )
+void mDelayuS( UINT16 t )
 {
     UINT16 i, j;
 
@@ -157,18 +162,19 @@ void DelsyUs( UINT16 t )
 }
 
 /*******************************************************************************
-* Function Name  : DelsyMs
+* Function Name  : mDelaymS
 * Description    : mS 延时
 * Input          : t: 时间参数
 * Return         : None
 *******************************************************************************/
-void DelsyMs( UINT16 t )
+void mDelaymS( UINT16 t )
 {
     UINT16 i;
 
     for(i=0; i<t; i++)
-        DelsyUs(1000);
+        mDelayuS(1000);
 }
+
 
 #if( defined  DEBUG)
 int fputc( int c, FILE *f )

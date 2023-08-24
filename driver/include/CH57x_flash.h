@@ -1,4 +1,14 @@
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_flash.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 
 #ifndef __CH57x_FLASH_H__
@@ -18,18 +28,13 @@
 void GetUniqueID(PUINT8 buf);                                           /* 获取芯片唯一ID，小端模式，6B-ID， 2B-CKS */    
      
 // 获取网络MAC
-void GetMACAddress(PUINT8 buf);                                         /* 获取网络MAC，小端模式，6B-MAC */    
-	 
-// CodeFlash 操作
-UINT8 CodeFlash_BlockEarse(UINT32 addr);								/* CodeFlash 块擦除，一次擦除512B */
-UINT8 CodeFlash_WriteDW(UINT32 addr, UINT32 dat);						/* CodeFlash 32bit写，地址需4字节对齐 */ 
-UINT8 CodeFlash_WriteBuf(UINT32 addr, PUINT32 pdat, UINT16 len);		/* CodeFlash 连续多个32bit写，地址需4字节对齐 */	 
-	 
-// DataFlash 操作
-UINT8 DataFlash_BlockEarse(UINT32 addr);								/* DataFlash 块擦除，一次擦除512B */	 
-UINT8 DataFlash_WriteDW(UINT32 addr, UINT32 dat);						/* DataFlash 32bit写，地址需4字节对齐 */
-	 
-	 
+void GetMACAddress(PUINT8 buf);                                         /* 获取网络MAC，小端模式，6B-MAC */   
+
+
+UINT8 FlashBlockErase(UINT32 addr);     
+UINT8 FlashWriteDW(UINT32 addr, UINT32 dat);
+UINT8 FlashWriteBuf(UINT32 addr, PUINT32 pdat, UINT16 len);	 
+
 	 
 	 
 #ifdef __cplusplus

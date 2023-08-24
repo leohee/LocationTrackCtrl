@@ -1,10 +1,14 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : CH57x_timer0.c
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2018/12/15
-* Description 
-*******************************************************************************/
+ * File Name          : CH57x_timer0.c
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2018/12/15
+ * Description 
+ *********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #include "CH57x_common.h"
 
@@ -34,6 +38,25 @@ void TMR0_EXTSingleCounterInit( UINT32 c )
     R32_TMR0_CNT_END = c;
     R8_TMR0_CTRL_MOD = RB_TMR_ALL_CLEAR;	
     R8_TMR0_CTRL_MOD = RB_TMR_CAP_COUNT|RB_TMR_MODE_IN|RB_TMR_COUNT_EN;
+}
+
+/*******************************************************************************
+* Function Name  : TMR0_CountInit
+* Description    : 边沿计数功能初始化
+* Input          : cap: 采集计数类型
+                    CAP_NULL - 不计数
+                    Edge_To_Edge - 计数任意边沿
+                    FallEdge_To_FallEdge - 计数下降沿
+					RiseEdge_To_RiseEdge - 计数上升沿
+* Return         : None
+*******************************************************************************/
+void TMR0_CountInit( CapModeTypeDef cap )
+{
+    R8_TMR0_CTRL_MOD = RB_TMR_ALL_CLEAR;
+    R8_TMR0_CTRL_MOD = RB_TMR_COUNT_EN      \
+                      |RB_TMR_CAP_COUNT     \
+                      |RB_TMR_MODE_IN       \
+                      |(cap<<6);    
 }
 
 /*******************************************************************************

@@ -383,24 +383,24 @@
           <GroupName>driver</GroupName>
           <Files>
             <File>
-              <FileName>system_clk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\driver\system_clk.c</FilePath>
-            </File>
-            <File>
               <FileName>startup_CH579.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\driver\startup_CH579.s</FilePath>
             </File>
             <File>
-              <FileName>CH57x_gpio.c</FileName>
+              <FileName>CH57x_clk.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\driver\src\CH57x_gpio.c</FilePath>
+              <FilePath>..\driver\src\CH57x_clk.c</FilePath>
             </File>
             <File>
               <FileName>CH57x_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\src\CH57x_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>CH57x_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\src\CH57x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>CH57x_pwr.c</FileName>

@@ -1,10 +1,14 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : CH57x_usbdev.c
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2018/12/15
-* Description 
-*******************************************************************************/
+ * File Name          : CH57x_usbdev.c
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2018/12/15
+ * Description 
+ *********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #include "CH57x_common.h"
 
@@ -37,12 +41,12 @@ void USB_DeviceInit( void )
     R8_UEP3_CTRL = UEP_R_RES_ACK | UEP_T_RES_NAK | RB_UEP_AUTO_TOG;
     R8_UEP4_CTRL = UEP_R_RES_ACK | UEP_T_RES_NAK;
                                 
-    R8_USB_INT_FG = 0xFF;                                              // 清中断标志
-    R8_USB_INT_EN = RB_UIE_SUSPEND | RB_UIE_BUS_RST | RB_UIE_TRANSFER; 
-
     R8_USB_DEV_AD = 0x00;
-    R8_USB_CTRL = RB_UC_DEV_PU_EN | RB_UC_INT_BUSY | RB_UC_DMA_EN;  // 启动USB设备及DMA，在中断期间中断标志未清除前自动返回NAK
+    R8_USB_CTRL = RB_UC_DEV_PU_EN | RB_UC_INT_BUSY | RB_UC_DMA_EN;  // 启动USB设备及DMA，在中断期间中断标志未清除前自动返回NAK    
+    R8_USB_INT_FG = 0xFF;                                           // 清中断标志
+    R16_PIN_ANALOG_IE |= RB_PIN_USB_IE;								// 防止USB端口浮空
     R8_UDEV_CTRL = RB_UD_PD_DIS|RB_UD_PORT_EN; 						// 允许USB端口	
+    R8_USB_INT_EN = RB_UIE_SUSPEND | RB_UIE_BUS_RST | RB_UIE_TRANSFER; 
 }
 
 /*******************************************************************************

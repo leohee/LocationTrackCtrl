@@ -1,4 +1,14 @@
-
+/********************************** (C) COPYRIGHT *******************************
+ * File Name          : CH57x_sys.h
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2022/12/05
+ * Description        : 
+ ********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 
 #ifndef __CH57x_SYS_H__
@@ -44,8 +54,6 @@ typedef enum
 }SYS_InfoStaTypeDef;
 	 
 
-
-
 #define SYS_GetChipID()				R8_CHIP_ID									/* 获取芯片ID类，一般为固定值 */
 #define SYS_GetAccessID()			R8_SAFE_ACCESS_ID							/* 获取安全访问ID，一般为固定值 */
 UINT8 SYS_GetInfoSta( SYS_InfoStaTypeDef i );									/* 获取当前系统信息状态 */
@@ -56,7 +64,7 @@ void SYS_ResetExecute( void );													/* 执行系统软件复位 */
 
 void SYS_DisableAllIrq( PUINT32 pirqv);									        /* 关闭所有中断，并保留当前中断值 */
 void SYS_RecoverIrq( UINT32 irq_status );									    /* 恢复之前关闭的中断值 */
-UINT32 SYS_GetSysTickCnt( void );												/* 获取当前系统(SYSTICK)计数值 */
+uint32_t SYS_GetSysTickCnt( void );												/* 获取当前系统(SYSTICK)计数值 */
 
 #define  WWDG_SetCounter( c )		(R8_WDOG_COUNT = c)							/* 加载看门狗计数初值，递增型 */
 void  WWDG_ITCfg( UINT8 s );							/* 看门狗溢出中断使能 */
@@ -64,8 +72,10 @@ void  WWDG_ResetCfg( UINT8 s );							/* 看门狗溢出复位使能 */
 #define  WWDG_GetFlowFlag()			(R8_RST_WDOG_CTRL&RB_WDOG_INT_FLAG)			/* 获取当前看门狗定时器溢出标志 */
 void WWDG_ClearFlag(void);														/* 清除看门狗中断标志，重新加载计数值也可清除 */
 
-void DelsyUs( UINT16 t );		/* uS 延时 */
-void DelsyMs( UINT16 t );		/* mS 延时 */
+
+void mDelayuS( UINT16 t );		/* uS 延时 */
+void mDelaymS( UINT16 t );		/* mS 延时 */
+
 
 
 #ifdef __cplusplus

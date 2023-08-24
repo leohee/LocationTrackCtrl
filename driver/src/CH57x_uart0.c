@@ -1,10 +1,14 @@
 /********************************** (C) COPYRIGHT *******************************
-* File Name          : CH57x_uart0.c
-* Author             : WCH
-* Version            : V1.0
-* Date               : 2018/12/15
-* Description 
-*******************************************************************************/
+ * File Name          : CH57x_uart0.c
+ * Author             : WCH
+ * Version            : V1.0
+ * Date               : 2018/12/15
+ * Description 
+ *********************************************************************************
+ * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
+ *******************************************************************************/
 
 #include "CH57x_common.h"
 
@@ -33,7 +37,7 @@ void UART0_BaudRateCfg( UINT32 baudrate )
 {
     UINT32	x;
 
-    x = 10 * FREQ_SYS / 8 / baudrate;
+    x = 10 * GetSysClock() / 8 / baudrate;
     x = ( x + 5 ) / 10;
     R16_UART0_DL = (UINT16)x;
 }
