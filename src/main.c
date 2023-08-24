@@ -1,4 +1,9 @@
-#include "CH57x_common.h"
+
+#include "inc_files.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 UINT8 TxBuff[]="This is a tx exam\r\n";
@@ -39,14 +44,32 @@ void UART1_IRQHandler(void)
     }
 }
 
+void sysclock_init (void)
+{
+	DelayMs(2); 
+	SetSysClock( CLK_SOURCE_HSE_32MHz );	// 设置主频为外部 32MHz
+}
+
+
+
+void lt_init (void)
+{
+	sysclock_init();
+	debug_uart_init();
+
+	log_info("chip id %02X", R8_CHIP_ID);
+
+	shell_init();
+
+}
+
 int main ()
 {
+	lt_init();
+
+
 	  unsigned char len = 0;
 		int i = 0;
-    GPIOA_SetBits(GPIO_Pin_9);
-    GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);
-    GPIOA_ModeCfg(GPIO_Pin_9, GPIO_ModeOut_PP_5mA);
-    UART1_DefInit();
 
 	  UART1_SendString( TxBuff, sizeof(TxBuff) );
 	
@@ -64,4 +87,9 @@ int main ()
 	
 		return 0;
 }
+
+
+#ifdef __cplusplus
+}
+#endif
 
