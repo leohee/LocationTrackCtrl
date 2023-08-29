@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern void debug_uart_init (void);
+extern void uart1_debug_init (void);
 
 #ifdef __cplusplus
 }

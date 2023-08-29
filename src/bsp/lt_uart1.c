@@ -7,11 +7,14 @@ extern "C" {
 
 uint8_t rxData[128];
 
-void debug_uart_init (void)
+void uart1_debug_init (void)
 {
+	// TX -> PA9
+	// RX -> PA8
 	GPIOA_SetBits(GPIO_Pin_9);
-	GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);
 	GPIOA_ModeCfg(GPIO_Pin_9, GPIO_ModeOut_PP_5mA);
+	GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);
+
 	UART1_DefInit();
 }
 
