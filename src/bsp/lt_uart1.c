@@ -16,6 +16,10 @@ void uart1_debug_init (void)
 	GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);
 
 	UART1_DefInit();
+
+	UART1_ByteTrigCfg( UART_1BYTE_TRIG );
+    UART1_INTCfg( ENABLE, RB_IER_RECV_RDY|RB_IER_LINE_STAT );
+    NVIC_EnableIRQ( UART1_IRQn );
 }
 
 void UART1_IRQHandler (void)
@@ -28,13 +32,10 @@ void UART1_IRQHandler (void)
 	case UART_II_RECV_RDY:
 		rxData[0] = UART1_RecvByte();
 		queue_in(&rxShell, &rxData[0]);
-
-		//UART1_SendByte(rxData[0]);
 	    break;
 
 	case UART_II_RECV_TOUT:
 		UART1_RecvString(rxData);
-		//UART1_SendString(rxData, i); 
 		break;
 
 	case UART_II_THR_EMPTY:

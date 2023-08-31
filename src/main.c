@@ -34,11 +34,11 @@ void lt_init (void)
 
 int main ()
 {
-	int ret = 0;
+	int ret = 0, cnt = 0;
 
 	lt_init();
-
-	pwr_mode(PWR_IDLE);
+	GPIOB_SetBits(GPIO_Pin_18);
+	//pwr_mode(PWR_IDLE);
 
     while (1) {
         ret = shell_run();
@@ -47,6 +47,14 @@ int main ()
 		}
 
 		DelayMs(1);
+
+		if (cnt++ == 0) {
+			GPIOB_SetBits(GPIO_Pin_18);
+		} else if (cnt == 500) {
+			GPIOB_ResetBits(GPIO_Pin_18);
+		} else if (cnt == 1000) {
+			cnt = 0;
+		} 
     }
 
 	// crash run to here

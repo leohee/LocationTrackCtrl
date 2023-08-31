@@ -11,11 +11,11 @@ extern "C" {
 #define MAX_COMMAND_NB		32
 #define MAX_ARGC			8
 
-#define NL1()           do { printf("\n"); } while(0)
-#define NL2()           do { printf("\n\n"); } while(0)
-#define NL3()           do { printf("\n\n\n"); } while(0)
+#define NL1()           do { printf("\n\r"); } while(0)
+#define NL2()           do { printf("\n\r\n\r"); } while(0)
+#define NL3()           do { printf("\n\r\n\r\n\r"); } while(0)
 
-#define SHELL_NAME()	do { printf(CLI_FONT_DEFAULT"\n -> "); } while(0)
+#define SHELL_NAME()	do { printf(CLI_FONT_DEFAULT"\n\r -> "); } while(0)
 
 
 struct handle_type_t {

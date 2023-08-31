@@ -31,11 +31,11 @@ uint8_t cli_help (int argc, char **argv)
 
 	for(i = 0; i < MAX_COMMAND_NB; i++) {
 		if(strcmp(cliCmds[i].pCmd, "") != 0){
-	    	printf("%s - ", cliCmds[i].pCmd);
+	    	printf("%s\t- ", cliCmds[i].pCmd);
 	        if (cliCmds[i].pHelp) {
 	            printf(cliCmds[i].pHelp);
 	        }
-			printf("\n");
+			printf("\n\r");
 		}
 	}
 	return 0;
@@ -60,6 +60,7 @@ uint8_t cli_clear (int argc, char **argv)
 uint8_t cli_reboot (int argc, char **argv)
 {
 	log_info("Reboot myself.");
+	DelayMs(10);
 
 	NVIC_SystemReset();
 
