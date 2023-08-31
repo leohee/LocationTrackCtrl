@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <stdarg.h>
+#include "vt100.h"
 
 #define MAX_LINE					(256)		///< 每行最大字符数
 
@@ -18,17 +19,17 @@ extern uint32_t SYS_GetSysTickCnt (void);
 extern void log_do (const char *fmt, ...);
 
 #if defined(DEBUG)
-  #define log_err(fmt, ...) log_do("%ld[_E_]: %s(%d): " fmt, \
+  #define log_err(fmt, ...) log_do(CLI_FONT_RED"%lu[_E_]: %s(%d): "CLI_FONT_DEFAULT fmt, \
 		SYS_GetSysTickCnt(), __func__, __LINE__, ##__VA_ARGS__)
 
-  #define log_info(fmt, ...) log_do("%ld[_I_]: %s(%d): " fmt, \
-		SYS_GetSysTickCnt(), __func__, __LINE__, ##__VA_ARGS__)
+  #define log_info(fmt, ...) log_do(CLI_FONT_GREEN"%lu[_I_]: %s(%d): "CLI_FONT_DEFAULT fmt, \
+		SysTick->VAL, __func__, __LINE__, ##__VA_ARGS__)
 
-  #define log_debug(fmt, ...) log_do("%ld[_D_]: %s(%d): " fmt, \
-		SYS_GetSysTickCnt(), __func__, __LINE__, ##__VA_ARGS__)
+  #define log_debug(fmt, ...) log_do(CLI_FONT_YELLOW"%lu[_D_]: %s(%d): "CLI_FONT_DEFAULT fmt, \
+		SysTick->VAL, __func__, __LINE__, ##__VA_ARGS__)
 
   #define log_hex(type, buff, len, fmt, ...) do {\
-  			log_do("%ld: %s(%d): " fmt, SYS_GetSysTickCnt(), \
+  			log_do("%lu: %s(%d): " fmt, SYS_GetSysTickCnt(), \
   				__func__, __LINE__, ##__VA_ARGS__); \
   			hex_printf(buff, len); } while(0)
 

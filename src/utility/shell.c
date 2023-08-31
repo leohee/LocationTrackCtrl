@@ -85,6 +85,30 @@ uint8_t cli_log (int argc, char **argv)
 	return 0;
 }
 
+uint8_t cli_power (int argc, char **argv)
+{
+	if (argc != 2) {
+		return 1;
+	}
+
+	if (strcmp(argv[1], "idle") == 0) {
+		log_info("lowpower mode idle.");
+
+	} else if(strcmp(argv[1], "halt") == 0) {
+		log_info("lowpower mode halt.");
+
+	} else if(strcmp(argv[1], "slp") == 0) {
+		log_info("lowpower mode sleep.");
+
+	} else if(strcmp(argv[1], "stdn") == 0) {
+		log_info("lowpower mode shutdown.");
+
+	}
+
+
+	return 0;
+}
+
 static void cli_history_add (char* buff)
 {
     uint16_t len;
@@ -334,7 +358,7 @@ void shell_init (void)
     command_add("cls", "clear screen", cli_clear);
     command_add("reset", "reboot", cli_reboot);
     command_add("log", "control log show", cli_log);
-
+	command_add("power", "low power mode: idle,halt,slp,stdn", cli_power);
 
 
 }

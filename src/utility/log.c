@@ -58,7 +58,7 @@ static void log_printf (const char *fmt, va_list ap)
 
 	vsnprintf(buf, MAX_LINE, fmt, ap);
 
-	strcat(buf, "\n");
+	strcat(buf, "\n\r");
 
 	fflush(stdout);
 	fputs(buf, stderr);

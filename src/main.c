@@ -50,6 +50,7 @@ int main ()
 
 		if (cnt++ == 0) {
 			GPIOB_SetBits(GPIO_Pin_18);
+			//log_debug();
 		} else if (cnt == 500) {
 			GPIOB_ResetBits(GPIO_Pin_18);
 		} else if (cnt == 1000) {
