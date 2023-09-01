@@ -7,6 +7,7 @@ extern "C" {
 
 extern void gpio_init (void);
 
+
 #ifdef __cplusplus
 }
 #endif

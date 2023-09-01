@@ -5,6 +5,8 @@
 
 #include "CH57x_common.h"
 
+#include <stdlib.h>
+
 #include "lt_uart1.h"
 #include "lt_uart0.h"
 #include "lt_gpio.h"

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-uint8_t rxData[128];
+uint8_t rxData[16];
 
 void uart1_debug_init (void)
 {

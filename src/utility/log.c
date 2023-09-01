@@ -8,6 +8,20 @@ extern "C" {
 
 const char Hex2Ascii[17] = "0123456789ABCDEF";
 
+void SysTick_Handler (void)
+{
+	gLT->ticks++;
+
+	if (gLT->ticks%COUNT_PER_SECOND == 0) {
+		gLT->lifetime++;
+		GPIOB_SetBits(GPIO_Pin_18);
+	} else if (gLT->ticks%COUNT_PER_SECOND == 500) {
+		GPIOB_ResetBits(GPIO_Pin_18);
+	}
+
+}
+
+
 #if defined(DEBUG)
 int hex_printf (const uint8_t *buff, int count)
 {

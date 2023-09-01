@@ -42,6 +42,14 @@ uint8_t cli_help (int argc, char **argv)
 
 }
 
+uint8_t cli_uptime (int argc, char **argv)
+{
+	printf("uptime %d s = %03d %02d:%02d:%02d\n\r", gLT->lifetime, gLT->lifetime/86400,
+			gLT->lifetime%86400/3600, gLT->lifetime%86400%3600/60, gLT->lifetime%86400%3600%60);
+
+	return 0;
+}
+
 uint8_t cli_clear (int argc, char **argv)
 {
 	TERMINAL_BACK_DEFAULT(); /* set terminal background color: black */
@@ -62,7 +70,8 @@ uint8_t cli_reboot (int argc, char **argv)
 	log_info("Reboot myself.");
 	DelayMs(10);
 
-	NVIC_SystemReset();
+	//NVIC_SystemReset();
+	SYS_ResetExecute();
 
 	return 0;
 }
@@ -93,18 +102,25 @@ uint8_t cli_power (int argc, char **argv)
 
 	if (strcmp(argv[1], "idle") == 0) {
 		log_info("lowpower mode idle.");
-
+		pwr_mode(PWR_IDLE);
 	} else if(strcmp(argv[1], "halt") == 0) {
 		log_info("lowpower mode halt.");
-
+		pwr_mode(PWR_HALT_2);
 	} else if(strcmp(argv[1], "slp") == 0) {
 		log_info("lowpower mode sleep.");
-
+		pwr_mode(PWR_nSLP_CORE_RAM14K_CK32K);
 	} else if(strcmp(argv[1], "stdn") == 0) {
 		log_info("lowpower mode shutdown.");
-
+		pwr_mode(PWR_nSTDW_RAM2K_CK32K);
 	}
 
+
+	return 0;
+}
+
+uint8_t cli_version (int argc, char **argv)
+{
+	log_info("%s built @ %s.", gLT->ver, gLT->built);
 
 	return 0;
 }
@@ -304,9 +320,7 @@ static void shell_handle (struct queue_t *rx_buff)
 					TERMINAL_HIDE_CURSOR();
 					uint8_t result = cliCmds[i].pFun(argc, argv);
 
-					if(result == 0){
-						printf(CLI_FONT_GREEN "(%s returned %d)" CLI_FONT_DEFAULT, command, result);NL1();
-					}else{
+					if(result != 0){
 						printf(CLI_FONT_RED "(%s returned %d)" CLI_FONT_DEFAULT, command, result);NL1();
 					}
 					TERMINAL_SHOW_CURSOR();
@@ -354,12 +368,13 @@ void shell_init (void)
 
 	queue_init(&rxShell);
 
-    command_add("help", "show commands", cli_help);
-    command_add("cls", "clear screen", cli_clear);
-    command_add("reset", "reboot", cli_reboot);
-    command_add("log", "control log show", cli_log);
+    command_add("help", "show commands.", cli_help);
+	command_add("uptime", "show uptime.", cli_uptime);
+    command_add("cls", "clear screen.", cli_clear);
+    command_add("reset", "reboot.", cli_reboot);
+    command_add("log", "log show: on,off", cli_log);
 	command_add("power", "low power mode: idle,halt,slp,stdn", cli_power);
-
+	command_add("ver", "show version.", cli_version);
 
 }
 
