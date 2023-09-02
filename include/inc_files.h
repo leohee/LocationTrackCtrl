@@ -12,6 +12,7 @@
 
 #include "lt_uart1.h"
 #include "lt_uart0.h"
+#include "lt_flash.h"
 #include "lt_gpio.h"
 #include "lt_pwr.h"
 #include "log.h"

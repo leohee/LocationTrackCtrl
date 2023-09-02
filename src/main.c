@@ -20,6 +20,23 @@ void sysclock_init (void)
 	GPIOB_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_PU);
 }
 
+// 0x2C ...  -> "2C..."
+void u8v_to_hexstr (uint8_t *data, uint16_t len, char *buf)
+{
+	int i = 0;
+
+	for(i = 0; i < len; i++) {
+		buf[2*i] = Hex2Ascii[(data[i]>>4)&0x0F];
+		buf[2*i+1] = Hex2Ascii[data[i]&0x0F];
+	}
+}
+
+void lt_get_uid (void)
+{
+	GetUniqueID(gLT->rawUID);
+	u8v_to_hexstr(gLT->rawUID, 6, gLT->UID);
+}
+
 static struct lt_info_t *lt_malloc (void)
 {
 	struct lt_info_t *pLT = NULL;
@@ -46,7 +63,11 @@ void lt_init (void)
 	gLT->built = __TIME__", "__DATE__;
 	gLT->chipID = R8_CHIP_ID;
 
-	log_info("chip id 0x%02X", gLT->chipID);
+	flash_init();
+
+	lt_get_uid();
+
+	log_info("Chip id : 0x%02X : %s", gLT->chipID, gLT->UID);
 	log_info("%s built @ %s.", gLT->ver, gLT->built);
 
 	shell_init();

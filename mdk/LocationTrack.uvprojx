@@ -453,6 +453,11 @@
           <GroupName>bsp</GroupName>
           <Files>
             <File>
+              <FileName>lt_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\bsp\lt_flash.c</FilePath>
+            </File>
+            <File>
               <FileName>lt_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\bsp\lt_gpio.c</FilePath>

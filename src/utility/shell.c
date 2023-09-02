@@ -68,7 +68,7 @@ int8_t cli_clear (int argc, char **argv)
 
 int8_t cli_reboot (int argc, char **argv)
 {
-	log_info("Reboot.");
+	log_info("Reboot @ %d s.", gLT->lifetime);
 	DelayMs(10);
 
 	//NVIC_SystemReset();
@@ -158,6 +158,33 @@ int8_t cli_gpio (int argc, char **argv)
 	return 0;
 }
 
+int8_t cli_flash (int argc, char **argv)
+{
+	if (argc != 2) {
+		printf("flash <offset>\n\r");
+		return -1;
+	}
+
+	int offset = atoi(argv[1]);
+
+	if ((offset < 0)||(offset > 0x800)) {
+		printf("offset [0, 2047]\n\r");
+		return -1;
+	}
+
+	if (offset % 4 != 0) {
+		printf("offset step 4\n\r");
+		return -1;
+	}
+
+	PUINT32 p32;
+	p32 = (PUINT32)(DATA_FLASH_ADDR + offset);
+
+	printf("read 0x%08lX = 0x%08lX\n\r", (UINT32)p32, *p32);
+
+	return 0;
+}
+
 int8_t cli_log (int argc, char **argv)
 {
 	if (argc != 2) {
@@ -167,11 +194,13 @@ int8_t cli_log (int argc, char **argv)
 
 	if (strcmp(argv[1], "on") == 0) {
 		gLT->enLog = true;
+		flash_write(OFFSET_ENABLE_LOG, 1);
 		log_info("set log on.");
 
 	} else if(strcmp(argv[1], "off") == 0) {
 		log_info("set log off.");
 		gLT->enLog = false;
+		flash_write(OFFSET_ENABLE_LOG, 0);
 	} else {
 		printf("log <on|off>\n\r");
 		return -1;
@@ -462,7 +491,7 @@ void shell_init (void)
 
     command_add("help", "show commands.", cli_help);
 	command_add("gpio", "gpio <A|B>(num) <in|(high|low)out>", cli_gpio);
-
+	command_add("flash", "read data offset addr.", cli_flash);
 
     command_add("log", "log show: on|off", cli_log);
 	command_add("power", "low power mode: idle|halt|slp|stdn", cli_power);
