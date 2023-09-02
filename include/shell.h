@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #define HISTORY_MAX         10
-#define MAX_LINE_LEN 		80
+#define MAX_LINE_LEN 		65
 #define MAX_COMMAND_NB		32
 #define MAX_ARGC			8
 
@@ -26,7 +26,7 @@ struct handle_type_t {
 struct command_t {
 	const char	*pCmd;
 	const char	*pHelp;
-	uint8_t		(*pFun)(int argc, char **argv);
+	int8_t		(*pFun)(int argc, char **argv);
 };
 
 struct cmd_history_t {

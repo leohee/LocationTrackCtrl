@@ -12,7 +12,9 @@ void sysclock_init (void)
 	DelayMs(2); 
 	SetSysClock(CLK_SOURCE_HSE_32MHz);	// 设置主频为外部 32MHz
 
+#if defined(CONFIG_USE_SYSTICK)
 	while(SysTick_Config(GetSysClock()/COUNT_PER_SECOND)){;}	// tick 1ms
+#endif
 
 	GPIOA_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_PU);
 	GPIOB_ModeCfg(GPIO_Pin_All, GPIO_ModeIN_PU);
@@ -35,8 +37,8 @@ static struct lt_info_t *lt_malloc (void)
 void lt_init (void)
 {
 	sysclock_init();
-	gpio_init();
 
+	gpio_init();
 	uart1_debug_init();
 	uart0_4g_init();
 
@@ -53,12 +55,14 @@ void lt_init (void)
 
 int main ()
 {
-	int ret = 0;
+	int ret = 0, cnt = 0;
 
 	gLT = lt_malloc();
 	if (NULL == gLT) {
 		return -1;
 	}
+
+	gLT->enLog = true;
 
 	lt_init();
 
@@ -69,6 +73,19 @@ int main ()
 		}
 
 		DelayMs(1);
+
+#if !defined(CONFIG_USE_SYSTICK)
+	gLT->ticks++;
+	if (++cnt == 1) {
+		GPIOB_SetBits(GPIO_Pin_18);
+	} else if (cnt == 499) {
+		GPIOB_ResetBits(GPIO_Pin_18);
+	} else if (cnt == 998) {
+		cnt = 0;
+		gLT->lifetime++;
+	}
+#endif
+
     }
 
 	// crash run to here

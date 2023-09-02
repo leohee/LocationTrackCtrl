@@ -8,23 +8,14 @@ extern "C" {
 
 const char Hex2Ascii[17] = "0123456789ABCDEF";
 
-void SysTick_Handler (void)
-{
-	gLT->ticks++;
-
-	if (gLT->ticks%COUNT_PER_SECOND == 0) {
-		gLT->lifetime++;
-		GPIOB_SetBits(GPIO_Pin_18);
-	} else if (gLT->ticks%COUNT_PER_SECOND == 500) {
-		GPIOB_ResetBits(GPIO_Pin_18);
-	}
-
-}
-
 
 #if defined(DEBUG)
 int hex_printf (const uint8_t *buff, int count)
 {
+	if (!gLT->enLog) {
+		return -1;
+	}
+
 	uint32_t i = 0, j = 0;
 
 	char str_val[75] = {0};
@@ -81,11 +72,13 @@ static void log_printf (const char *fmt, va_list ap)
 
 void log_do (const char *fmt, ...)
 {
-	va_list ap;
+	if (gLT->enLog) {
+		va_list ap;
 
-	va_start(ap, fmt);
-	log_printf(fmt, ap);
-	va_end(ap);
+		va_start(ap, fmt);
+		log_printf(fmt, ap);
+		va_end(ap);
+	}
 }
 
 #endif

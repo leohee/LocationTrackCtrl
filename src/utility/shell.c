@@ -12,7 +12,7 @@ struct command_t cliCmds[MAX_COMMAND_NB];
 struct cmd_history_t hisCmd;
 
 
-void command_add (const char *command, const char *help, uint8_t (*exec)(int argc, char **argv))
+void command_add (const char *command, const char *help, int8_t (*exec)(int argc, char **argv))
 {
 	int i = 0;
 	for (; i < MAX_COMMAND_NB; i++) {
@@ -25,7 +25,7 @@ void command_add (const char *command, const char *help, uint8_t (*exec)(int arg
 	}
 }
 
-uint8_t cli_help (int argc, char **argv)
+int8_t cli_help (int argc, char **argv)
 {
 	int i = 0;
 
@@ -42,15 +42,16 @@ uint8_t cli_help (int argc, char **argv)
 
 }
 
-uint8_t cli_uptime (int argc, char **argv)
+int8_t cli_uptime (int argc, char **argv)
 {
-	printf("uptime %d s = %03d %02d:%02d:%02d\n\r", gLT->lifetime, gLT->lifetime/86400,
-			gLT->lifetime%86400/3600, gLT->lifetime%86400%3600/60, gLT->lifetime%86400%3600%60);
+	printf("uptime %d us\n\r", gLT->ticks);
+	printf("%03d %02d:%02d:%02d\n\r", gLT->lifetime/86400, gLT->lifetime%86400/3600, 
+		gLT->lifetime%86400%3600/60, gLT->lifetime%86400%3600%60);
 
 	return 0;
 }
 
-uint8_t cli_clear (int argc, char **argv)
+int8_t cli_clear (int argc, char **argv)
 {
 	TERMINAL_BACK_DEFAULT(); /* set terminal background color: black */
 	TERMINAL_FONT_DEFAULT(); /* set terminal display color: green */
@@ -65,9 +66,9 @@ uint8_t cli_clear (int argc, char **argv)
 	return 0;
 }
 
-uint8_t cli_reboot (int argc, char **argv)
+int8_t cli_reboot (int argc, char **argv)
 {
-	log_info("Reboot myself.");
+	log_info("Reboot.");
 	DelayMs(10);
 
 	//NVIC_SystemReset();
@@ -76,51 +77,142 @@ uint8_t cli_reboot (int argc, char **argv)
 	return 0;
 }
 
-uint8_t cli_log (int argc, char **argv)
+int8_t cli_gpio (int argc, char **argv)
+{
+	if (argc != 3) {
+		printf("gpio <A|B>(num) <in|(high|low)out>\n\r");
+		return -1;
+	}
+
+	int pin = atoi(&argv[1][1]);
+	if ((pin < 0)||(pin > 23)) {
+		printf("pin num A[0, 15]|B[0, 23]\n\r");
+		return -1;
+	}
+	uint32_t gpio = 1<<pin;
+	uint8_t type = 0;
+
+	if (strcmp(argv[2], "in") == 0) {
+		type = 1;
+	} else if (strcmp(argv[2], "high") == 0) {
+		type = 2;
+	} else if (strcmp(argv[2], "low") == 0) {
+		type = 3;
+	} else {
+		printf("direct <in|high|low>\n\r");
+		return -1;
+	}
+
+	switch (argv[1][0]) {
+	case 'a':
+	case 'A':
+		if (pin > 15) {
+			printf("pin num A[0, 15]\n\r");
+			return -1;
+		}
+		switch (type) {
+		case 1:
+			GPIOA_ModeCfg(gpio, GPIO_ModeIN_PU);
+			printf("%s = %d\n\r", argv[1], 0 != GPIOA_ReadPortPin(gpio));
+			break;
+		case 2:
+			GPIOA_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOA_SetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		case 3:
+			GPIOA_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOA_ResetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		}
+		break;
+	case 'b':
+	case 'B':
+		if (pin > 23) {
+			printf("pin num B[0, 23]\n\r");
+			return -1;
+		}
+		switch (type) {
+		case 1:
+			GPIOB_ModeCfg(gpio, GPIO_ModeIN_PU);
+			printf("%s = %d\n\r", argv[1], GPIOB_ReadPortPin(gpio));
+			break;
+		case 2:
+			GPIOB_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOB_SetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		case 3:
+			GPIOB_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOB_ResetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		}
+		break;
+	default:
+		printf("port A|B\n\r");
+		return -1;
+	}
+
+	return 0;
+}
+
+int8_t cli_log (int argc, char **argv)
 {
 	if (argc != 2) {
-		return 1;
+		printf("log <on|off>\n\r");
+		return -1;
 	}
 
 	if (strcmp(argv[1], "on") == 0) {
+		gLT->enLog = true;
 		log_info("set log on.");
 
 	} else if(strcmp(argv[1], "off") == 0) {
 		log_info("set log off.");
-
+		gLT->enLog = false;
+	} else {
+		printf("log <on|off>\n\r");
+		return -1;
 	}
 
 
 	return 0;
 }
 
-uint8_t cli_power (int argc, char **argv)
+int8_t cli_power (int argc, char **argv)
 {
 	if (argc != 2) {
-		return 1;
+		printf("power <idle|halt|slp|stdn>\n\r");
+		return -1;
 	}
+
+	printf("power mode ");
 
 	if (strcmp(argv[1], "idle") == 0) {
-		log_info("lowpower mode idle.");
+		printf("idle.\n\r");
 		pwr_mode(PWR_IDLE);
 	} else if(strcmp(argv[1], "halt") == 0) {
-		log_info("lowpower mode halt.");
-		pwr_mode(PWR_HALT_2);
+		printf("halt.\n\r");
+		pwr_mode(PWR_HALT_1);
 	} else if(strcmp(argv[1], "slp") == 0) {
-		log_info("lowpower mode sleep.");
-		pwr_mode(PWR_nSLP_CORE_RAM14K_CK32K);
+		printf("sleep.\n\r");
+		pwr_mode(PWR_nSLP_CORE_RAM14K);
 	} else if(strcmp(argv[1], "stdn") == 0) {
-		log_info("lowpower mode shutdown.");
-		pwr_mode(PWR_nSTDW_RAM2K_CK32K);
+		printf("shutdown.\n\r");
+		pwr_mode(PWR_STDW_ALL);
+	} else {
+		printf("unknown.\n\r");
+		return -1;
 	}
-
 
 	return 0;
 }
 
-uint8_t cli_version (int argc, char **argv)
+int8_t cli_version (int argc, char **argv)
 {
-	log_info("%s built @ %s.", gLT->ver, gLT->built);
+	printf("%s built @ %s.\n\r", gLT->ver, gLT->built);
 
 	return 0;
 }
@@ -159,7 +251,7 @@ static void cli_history_add (char* buff)
     hisCmd.show = 0;
 }
 
-static uint8_t cli_history_show(uint8_t mode, char** p_history)
+static uint8_t cli_history_show (uint8_t mode, char **p_history)
 {
     uint8_t err = true;
     uint8_t num;
@@ -284,7 +376,7 @@ static void shell_handle (struct queue_t *rx_buff)
     }
 
     // Step2: handle the commands
-    if(exec_req && (Handle.len == 1)) {
+    if (exec_req && (Handle.len == 1)) {
         /* KEY_ENTER -->ENTER key from terminal */
     	SHELL_NAME();
         Handle.len = 0;
@@ -318,23 +410,23 @@ static void shell_handle (struct queue_t *rx_buff)
 				if (cliCmds[i].pFun != NULL) {
 					/* call the func. */
 					TERMINAL_HIDE_CURSOR();
-					uint8_t result = cliCmds[i].pFun(argc, argv);
+					int8_t result = cliCmds[i].pFun(argc, argv);
 
-					if(result != 0){
-						printf(CLI_FONT_RED "(%s returned %d)" CLI_FONT_DEFAULT, command, result);NL1();
+					if (result != 0){
+						printf(CLI_FONT_RED "['%s'] = %d" CLI_FONT_DEFAULT, command, result);NL1();
 					}
 					TERMINAL_SHOW_CURSOR();
 					break;
 				} else {
 					/* func. is void */
-					printf(CLI_FONT_RED "Command %s exists but no function is associated to it.", command);NL1();
+					printf(CLI_FONT_RED "Command '%s' not impl.", command);NL1();
 				}
 			}
 		}
 
-		if(!cmd_match) {
+		if (!cmd_match) {
 			/* no matching command */
-			printf("Command \"%s\" unknown, try: help", Handle.buff);NL1();
+			printf("Unknown command '%s'. 'help' for more.", Handle.buff);NL1();
 		}
 
 		Handle.len = 0;
@@ -342,9 +434,9 @@ static void shell_handle (struct queue_t *rx_buff)
 
     }
 
-    if(Handle.len >= MAX_LINE_LEN) {
+    if (Handle.len >= MAX_LINE_LEN) {
         /* full, so restart the count */
-    	printf(CLI_FONT_RED "\r\nMax command length is %d.\r\n" CLI_FONT_DEFAULT, MAX_LINE_LEN-1);
+    	printf(CLI_FONT_RED "\r\nCommand over length %d\r\n" CLI_FONT_DEFAULT, MAX_LINE_LEN-1);
     	SHELL_NAME();
         Handle.len = 0;
     }
@@ -369,13 +461,17 @@ void shell_init (void)
 	queue_init(&rxShell);
 
     command_add("help", "show commands.", cli_help);
-	command_add("uptime", "show uptime.", cli_uptime);
-    command_add("cls", "clear screen.", cli_clear);
-    command_add("reset", "reboot.", cli_reboot);
-    command_add("log", "log show: on,off", cli_log);
-	command_add("power", "low power mode: idle,halt,slp,stdn", cli_power);
-	command_add("ver", "show version.", cli_version);
+	command_add("gpio", "gpio <A|B>(num) <in|(high|low)out>", cli_gpio);
 
+
+    command_add("log", "log show: on|off", cli_log);
+	command_add("power", "low power mode: idle|halt|slp|stdn", cli_power);
+
+
+	command_add("uptime", "show uptime.", cli_uptime);
+    command_add("reboot", "reboot.", cli_reboot);
+	command_add("ver", "show version.", cli_version);
+    command_add("cls", "clear screen.", cli_clear);
 }
 
 
