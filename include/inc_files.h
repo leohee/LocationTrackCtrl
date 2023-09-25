@@ -1,6 +1,9 @@
 #ifndef __INC_FILES_H__
 #define __INC_FILES_H__
 
+//#define CONFIG_USE_SYSTICK
+#define CONFIG_USE_SHELL
+#define CONFIG_USE_LOG
 
 
 #include "CH57x_common.h"

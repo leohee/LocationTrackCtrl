@@ -22,7 +22,14 @@ void GPIO_IRQHandler (void)
 
 }
 
-
+void set_led (uint8_t state)
+{
+	if (LED_LIGHT_ON == state) {
+		GPIOB_ResetBits(GPIO_Pin_18);
+	} else {
+		GPIOB_SetBits(GPIO_Pin_18);
+	}
+}
 
 #ifdef __cplusplus
 }

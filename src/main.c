@@ -98,9 +98,9 @@ int main ()
 #if !defined(CONFIG_USE_SYSTICK)
 	gLT->ticks++;
 	if (++cnt == 1) {
-		GPIOB_SetBits(GPIO_Pin_18);
+		set_led(LED_LIGHT_OFF);
 	} else if (cnt == 499) {
-		GPIOB_ResetBits(GPIO_Pin_18);
+		set_led(LED_LIGHT_ON);
 	} else if (cnt == 998) {
 		cnt = 0;
 		gLT->lifetime++;

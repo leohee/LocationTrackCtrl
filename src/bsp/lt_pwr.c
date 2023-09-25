@@ -12,9 +12,9 @@ void SysTick_Handler (void)
 
 	if (gLT->ticks%COUNT_PER_SECOND == 0) {
 		gLT->lifetime++;
-		GPIOB_SetBits(GPIO_Pin_18);
+		set_led(LED_LIGHT_OFF);
 	} else if (gLT->ticks%COUNT_PER_SECOND == 500) {
-		GPIOB_ResetBits(GPIO_Pin_18);
+		set_led(LED_LIGHT_ON);
 	}
 
 }
@@ -22,6 +22,8 @@ void SysTick_Handler (void)
 
 void pwr_mode (uint8_t mode)
 {
+	set_led(LED_LIGHT_OFF);
+
 	switch (mode) {
 	case PWR_IDLE:
 		log_info("IDLE mode sleep.");

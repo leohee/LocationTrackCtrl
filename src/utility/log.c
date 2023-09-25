@@ -9,7 +9,7 @@ extern "C" {
 const char Hex2Ascii[17] = "0123456789ABCDEF";
 
 
-#if defined(DEBUG)
+#if defined(CONFIG_USE_LOG)
 int hex_printf (const uint8_t *buff, int count)
 {
 	if (!gLT->enLog) {
@@ -79,6 +79,18 @@ void log_do (const char *fmt, ...)
 		log_printf(fmt, ap);
 		va_end(ap);
 	}
+}
+
+#else
+
+int hex_printf (const uint8_t *buff, int count)
+{
+	return 0;
+}
+
+void log_do (const char *fmt, ...)
+{
+
 }
 
 #endif

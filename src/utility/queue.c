@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+#ifdef CONFIG_USE_SHELL
+
 /* inits the contents of the queue to zeros */
 uint8_t queue_init (struct queue_t *queue)
 {
@@ -64,7 +66,7 @@ uint8_t queue_out (struct queue_t *queue, uint8_t *PData)
     return true;
 }
 
-
+#endif
 
 
 #ifdef __cplusplus

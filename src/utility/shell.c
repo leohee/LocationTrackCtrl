@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 
+#ifdef CONFIG_USE_SHELL
+
 struct queue_t rxShell;
 
 struct command_t cliCmds[MAX_COMMAND_NB];
@@ -93,11 +95,11 @@ int8_t cli_gpio (int argc, char **argv)
 	uint8_t type = 0;
 
 	if (strcmp(argv[2], "in") == 0) {
-		type = 1;
+		type = GPIO_TYPE_IN;
 	} else if (strcmp(argv[2], "high") == 0) {
-		type = 2;
+		type = GPIO_TYPE_HIGH;
 	} else if (strcmp(argv[2], "low") == 0) {
-		type = 3;
+		type = GPIO_TYPE_LOW;
 	} else {
 		printf("direct <in|high|low>\n\r");
 		return -1;
@@ -111,18 +113,18 @@ int8_t cli_gpio (int argc, char **argv)
 			return -1;
 		}
 		switch (type) {
-		case 1:
+		case GPIO_TYPE_IN:
 			GPIOA_ModeCfg(gpio, GPIO_ModeIN_PU);
 			printf("%s = %d\n\r", argv[1], 0 != GPIOA_ReadPortPin(gpio));
 			break;
-		case 2:
-			GPIOA_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
-			GPIOA_SetBits(gpio);
-			printf("set %s %s\n\r", argv[1], argv[2]);
-			break;
-		case 3:
+		case GPIO_TYPE_HIGH:
 			GPIOA_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
 			GPIOA_ResetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		case GPIO_TYPE_LOW:
+			GPIOA_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOA_SetBits(gpio);
 			printf("set %s %s\n\r", argv[1], argv[2]);
 			break;
 		}
@@ -134,18 +136,18 @@ int8_t cli_gpio (int argc, char **argv)
 			return -1;
 		}
 		switch (type) {
-		case 1:
+		case GPIO_TYPE_IN:
 			GPIOB_ModeCfg(gpio, GPIO_ModeIN_PU);
 			printf("%s = %d\n\r", argv[1], GPIOB_ReadPortPin(gpio));
 			break;
-		case 2:
-			GPIOB_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
-			GPIOB_SetBits(gpio);
-			printf("set %s %s\n\r", argv[1], argv[2]);
-			break;
-		case 3:
+		case GPIO_TYPE_HIGH:
 			GPIOB_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
 			GPIOB_ResetBits(gpio);
+			printf("set %s %s\n\r", argv[1], argv[2]);
+			break;
+		case GPIO_TYPE_LOW:
+			GPIOB_ModeCfg(gpio, GPIO_ModeOut_PP_20mA);
+			GPIOB_SetBits(gpio);
 			printf("set %s %s\n\r", argv[1], argv[2]);
 			break;
 		}
@@ -503,7 +505,19 @@ void shell_init (void)
     command_add("cls", "clear screen.", cli_clear);
 }
 
+#else
 
+int shell_run (void)
+{
+	return 0;
+}
+
+void shell_init (void)
+{
+
+}
+
+#endif
 
 #ifdef __cplusplus
 }

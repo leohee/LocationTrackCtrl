@@ -12,11 +12,12 @@ extern "C" {
 
 extern const char Hex2Ascii[17];
 
-extern int hex_printf (const uint8_t *buff, int count);
+#if defined(CONFIG_USE_LOG)
 
-extern void log_do (const char *fmt, ...);
+  extern int hex_printf (const uint8_t *buff, int count);
 
-#if defined(DEBUG)
+  extern void log_do (const char *fmt, ...);
+
   #define log_err(fmt, ...) log_do(CLI_FONT_RED"%lu[_E_]: %s(%d): "CLI_FONT_DEFAULT fmt, \
 		gLT->ticks, __func__, __LINE__, ##__VA_ARGS__)
 

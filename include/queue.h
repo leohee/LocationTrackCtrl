@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#ifdef CONFIG_USE_SHELL
+
 #ifndef QUEUE_LENGTH
   #define QUEUE_LENGTH 32
 #endif
@@ -21,6 +23,7 @@ extern uint8_t queue_empty (struct queue_t *queue);
 extern uint8_t queue_in (struct queue_t *queue, uint8_t *PData);
 extern uint8_t queue_out (struct queue_t *queue, uint8_t *PData);
 
+#endif
 
 #ifdef __cplusplus
 }

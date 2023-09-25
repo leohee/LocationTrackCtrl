@@ -6,6 +6,8 @@
 extern "C" {
 #endif
 
+#ifdef CONFIG_USE_SHELL
+
 #define HISTORY_MAX         10
 #define MAX_LINE_LEN 		65
 #define MAX_COMMAND_NB		32
@@ -37,6 +39,8 @@ struct cmd_history_t {
 };
 
 extern struct queue_t rxShell;
+
+#endif
 
 extern int shell_run (void);
 

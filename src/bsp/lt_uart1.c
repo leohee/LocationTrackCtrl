@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#ifdef CONFIG_USE_SHELL
+
 uint8_t rxData[16];
 
 void uart1_debug_init (void)
@@ -48,6 +50,15 @@ void UART1_IRQHandler (void)
 		break;
 	}
 }
+
+#else
+void uart1_debug_init (void)
+{
+
+}
+
+#endif
+
 
 #ifdef __cplusplus
 }

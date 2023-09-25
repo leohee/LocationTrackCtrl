@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-//#define CONFIG_USE_SYSTICK
 
 #define COUNT_PER_SECOND		(1000)		// 每秒分为1000份
 
