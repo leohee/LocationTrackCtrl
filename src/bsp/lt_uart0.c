@@ -10,9 +10,9 @@ void uart0_4g_init (void)
 {
 	// TX -> PB7
 	// RX -> PB4
-	GPIOB_SetBits(GPIO_Pin_7);
-	GPIOB_ModeCfg(GPIO_Pin_7, GPIO_ModeOut_PP_5mA);
-	GPIOB_ModeCfg(GPIO_Pin_4, GPIO_ModeIN_PU);
+	GPIOB_SetBits(PIN_U0_TX);
+	GPIOB_ModeCfg(PIN_U0_TX, GPIO_ModeOut_PP_5mA);
+	GPIOB_ModeCfg(PIN_U0_RX, GPIO_ModeIN_PU);
 
 	UART0_DefInit();
 }

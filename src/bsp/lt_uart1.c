@@ -13,9 +13,9 @@ void uart1_debug_init (void)
 {
 	// TX -> PA9
 	// RX -> PA8
-	GPIOA_SetBits(GPIO_Pin_9);
-	GPIOA_ModeCfg(GPIO_Pin_9, GPIO_ModeOut_PP_5mA);
-	GPIOA_ModeCfg(GPIO_Pin_8, GPIO_ModeIN_PU);
+	GPIOA_SetBits(PIN_DBG_TX);
+	GPIOA_ModeCfg(PIN_DBG_TX, GPIO_ModeOut_PP_5mA);
+	GPIOA_ModeCfg(PIN_DBG_RX, GPIO_ModeIN_PU);
 
 	UART1_DefInit();
 

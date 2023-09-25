@@ -23,6 +23,7 @@ void SysTick_Handler (void)
 void pwr_mode (uint8_t mode)
 {
 	set_led(LED_LIGHT_OFF);
+	set_4g_power(DISABLE);
 
 	switch (mode) {
 	case PWR_IDLE:
@@ -138,7 +139,7 @@ void pwr_mode (uint8_t mode)
 	}
 
 
-
+	set_4g_power(ENABLE);
 
 }
 
